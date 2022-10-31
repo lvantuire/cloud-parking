@@ -7,6 +7,7 @@ import com.vantuir.parking.model.Parking;
 import com.vantuir.parking.service.ParkingService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,8 +38,12 @@ public class ParkingController {
     }
 
     @GetMapping("/{id}")
+
     public ResponseEntity<ParkingDTO> findById(@PathVariable String id) {
         Parking parking = parkingService.findById(id);
+        if(parking == null) {
+            return ResponseEntity.notFound().build();
+        }
         ParkingDTO result = parkingMapper.toParkingDPO(parking);
         return ResponseEntity.ok(result);
     }

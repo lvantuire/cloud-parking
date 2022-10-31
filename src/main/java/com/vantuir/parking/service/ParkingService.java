@@ -1,5 +1,6 @@
 package com.vantuir.parking.service;
 
+import com.vantuir.parking.exception.ParkingNotFoundException;
 import com.vantuir.parking.model.Parking;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -38,8 +39,14 @@ public class ParkingService {
         return UUID.randomUUID().toString().replace("-", "");
     }
 
+
+
     public Parking findById(String id) {
-        return parkingMap.get(id);
+        Parking parking = parkingMap.get(id);
+        if (parking==null) {
+            throw new ParkingNotFoundException(id);
+        }
+        return parking;
     }
 
 
