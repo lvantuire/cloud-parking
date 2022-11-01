@@ -2,10 +2,7 @@ package com.vantuir.parking.service;
 
 import com.vantuir.parking.exception.ParkingNotFoundException;
 import com.vantuir.parking.model.Parking;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -19,13 +16,16 @@ public class ParkingService {
     private static Map<String, Parking> parkingMap = new HashMap();
 
     static {
-        var id = getUUID();
+        var id0 = getUUID();
         var id1 = getUUID();
+        var id2 = getUUID();
 
-        Parking parking = new Parking(id, "DMS-1111", "SC", "CELTA", "PRETO");
+        Parking parking0 = new Parking(id0, "DMS-1111", "SC", "CELTA", "PRETO");
         Parking parking1 = new Parking(id1, "WAS-2222", "SP", "KWID", "VERMELHO");
-        parkingMap.put(id, parking);
+        Parking parking2 = new Parking(id2, "FTE-3334", "SP", "FUSCA", "AZUL");
+        parkingMap.put(id0, parking0);
         parkingMap.put(id1, parking1);
+        parkingMap.put(id2, parking2);
 
     }
 
@@ -57,5 +57,17 @@ public class ParkingService {
         parkingCreate.setEntryDate(LocalDateTime.now());
         parkingMap.put(uuid, parkingCreate);
         return parkingCreate;
+    }
+
+    public void delete(String id) {
+       findById(id);
+       parkingMap.remove(id);
+    }
+
+    public Parking update(String id, Parking parkingCreate) {
+        Parking parking = findById(id);
+        parking.setColor(parkingCreate.getColor());
+        parkingMap.replace(id,parking);
+        return parking;
     }
 }
